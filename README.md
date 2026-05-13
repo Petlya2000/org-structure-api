@@ -37,12 +37,14 @@ cd org-structure-api
 
 # Запустить проект
 docker-compose up --build
+
 После запуска API будет доступно:
 
 API: http://localhost:8000
 
 Документация Swagger: http://localhost:8000/docs
-
+```
+```bash
 📡 API Endpoints
 Метод	Эндпоинт	Описание
 POST	/departments/	Создать подразделение
@@ -62,6 +64,8 @@ DELETE /departments/{id}
 mode - режим удаления (cascade или reassign)
 
 reassign_to_department_id - ID подразделения для переназначения (обязателен при mode=reassign)
+```
+```bash
 
 📝 Примеры запросов
 Создание подразделения
@@ -98,6 +102,9 @@ curl -X DELETE "http://localhost:8000/departments/2?mode=cascade"
 
 # Удаление с переназначением сотрудников
 curl -X DELETE "http://localhost:8000/departments/2?mode=reassign&reassign_to_department_id=1"
+```
+```bash
+
 🧠 Бизнес-логика и ограничения
 ✅ Название подразделения: длина 1-200 символов, уникально в пределах одного родителя
 
@@ -112,6 +119,8 @@ curl -X DELETE "http://localhost:8000/departments/2?mode=reassign&reassign_to_de
 ✅ При удалении в режиме cascade удаляется всё поддерево
 
 ✅ При удалении в режиме reassign сотрудники переназначаются в другое подразделение
+```
+```bash
 
 🧪 Запуск тестов
 bash
@@ -120,6 +129,9 @@ docker-compose exec app pytest -v
 
 text
 ================== 6 passed in 1.73s ==================
+```
+```bash
+
 🗄️ Миграции базы данных
 bash
 # Создать миграцию
@@ -127,6 +139,9 @@ docker-compose exec app alembic revision --autogenerate -m "migration_name"
 
 # Применить миграции
 docker-compose exec app alembic upgrade head
+```
+```bash
+
 📁 Структура проекта
 text
 app/
@@ -138,3 +153,4 @@ app/
 ├── services/         # Бизнес-логика
 ├── utils/            # Вспомогательные функции
 └── tests/            # Pytest тесты
+```
