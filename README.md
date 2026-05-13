@@ -44,8 +44,9 @@ API: http://localhost:8000
 
 Документация Swagger: http://localhost:8000/docs
 ```
-```bash
 📡 API Endpoints
+```bash
+
 Метод	Эндпоинт	Описание
 POST	/departments/	Создать подразделение
 POST	/departments/{id}/employees/	Создать сотрудника
@@ -65,9 +66,10 @@ mode - режим удаления (cascade или reassign)
 
 reassign_to_department_id - ID подразделения для переназначения (обязателен при mode=reassign)
 ```
-```bash
 
 📝 Примеры запросов
+```bash
+
 Создание подразделения
 bash
 curl -X POST http://localhost:8000/departments/ \
@@ -103,9 +105,10 @@ curl -X DELETE "http://localhost:8000/departments/2?mode=cascade"
 # Удаление с переназначением сотрудников
 curl -X DELETE "http://localhost:8000/departments/2?mode=reassign&reassign_to_department_id=1"
 ```
-```bash
 
 🧠 Бизнес-логика и ограничения
+```bash
+
 ✅ Название подразделения: длина 1-200 символов, уникально в пределах одного родителя
 
 ✅ Полное имя сотрудника: длина 1-200 символов
@@ -120,29 +123,28 @@ curl -X DELETE "http://localhost:8000/departments/2?mode=reassign&reassign_to_de
 
 ✅ При удалении в режиме reassign сотрудники переназначаются в другое подразделение
 ```
-```bash
 
 🧪 Запуск тестов
-bash
+```bash
 docker-compose exec app pytest -v
 Результат:
 
 text
 ================== 6 passed in 1.73s ==================
 ```
-```bash
 
 🗄️ Миграции базы данных
-bash
+```bash
 # Создать миграцию
 docker-compose exec app alembic revision --autogenerate -m "migration_name"
 
 # Применить миграции
 docker-compose exec app alembic upgrade head
 ```
-```bash
 
 📁 Структура проекта
+```bash
+
 text
 app/
 ├── api/              # Роутеры API
