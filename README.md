@@ -2,7 +2,19 @@
 
 API для управления иерархической структурой подразделений и сотрудников.
 
-## Технологии
+## 📋 Содержание
+
+- [Технологии](#технологии)
+- [Требования](#требования)
+- [Быстрый запуск](#быстрый-запуск)
+- [API Endpoints](#api-endpoints)
+- [Примеры запросов](#примеры-запросов)
+- [Бизнес-логика](#бизнес-логика-и-ограничения)
+- [Тестирование](#запуск-тестов)
+- [Миграции](#миграции-базы-данных)
+- [Структура проекта](#структура-проекта)
+
+## 🚀 Технологии
 
 - **FastAPI** - веб-фреймворк
 - **PostgreSQL** - база данных
@@ -11,27 +23,30 @@ API для управления иерархической структурой 
 - **Docker** - контейнеризация
 - **Pytest** - тестирование
 
-## Требования
+## 📦 Требования
 
 - Docker Desktop
 - Docker Compose
 
-## Быстрый запуск
+## 🔧 Быстрый запуск
 
 ```bash
 # Клонировать репозиторий
-git clone <your-repo-url>
+git clone https://github.com/Petlya2000/org-structure-api.git
 cd org-structure-api
 
 # Запустить проект
 docker-compose up --build
+
 После запуска API будет доступно:
 
 API: http://localhost:8000
 
 Документация Swagger: http://localhost:8000/docs
+```
+📡 API Endpoints
+```bash
 
-API Endpoints
 Метод	Эндпоинт	Описание
 POST	/departments/	Создать подразделение
 POST	/departments/{id}/employees/	Создать сотрудника
@@ -50,13 +65,25 @@ DELETE /departments/{id}
 mode - режим удаления (cascade или reassign)
 
 reassign_to_department_id - ID подразделения для переназначения (обязателен при mode=reassign)
+```
 
-Примеры запросов
+📝 Примеры запросов
+```bash
+
 Создание подразделения
 bash
 curl -X POST http://localhost:8000/departments/ \
   -H "Content-Type: application/json" \
   -d '{"name":"IT Department","parent_id":null}'
+Ответ:
+
+json
+{
+  "id": 1,
+  "name": "IT Department",
+  "parent_id": null,
+  "created_at": "2026-05-13T19:55:32.431241"
+}
 Создание сотрудника
 bash
 curl -X POST http://localhost:8000/departments/1/employees/ \
@@ -77,41 +104,55 @@ curl -X DELETE "http://localhost:8000/departments/2?mode=cascade"
 
 # Удаление с переназначением сотрудников
 curl -X DELETE "http://localhost:8000/departments/2?mode=reassign&reassign_to_department_id=1"
-Бизнес-логика и ограничения
-Название подразделения: длина 1-200 символов, уникально в пределах одного родителя
+```
 
-Полное имя сотрудника: длина 1-200 символов
+🧠 Бизнес-логика и ограничения
+```bash
 
-Должность: длина 1-200 символов
+✅ Название подразделения: длина 1-200 символов, уникально в пределах одного родителя
 
-Нельзя создать подразделение-родитель самого себя
+✅ Полное имя сотрудника: длина 1-200 символов
 
-Нельзя создать цикл в дереве (возвращается 409 Conflict)
+✅ Должность: длина 1-200 символов
 
-При удалении в режиме cascade удаляется всё поддерево
+✅ Нельзя создать подразделение-родитель самого себя
 
-При удалении в режиме reassign сотрудники переназначаются в другое подразделение
+✅ Нельзя создать цикл в дереве (возвращается 409 Conflict)
 
-Запуск тестов
-bash
+✅ При удалении в режиме cascade удаляется всё поддерево
+
+✅ При удалении в режиме reassign сотрудники переназначаются в другое подразделение
+```
+
+🧪 Запуск тестов
+```bash
 docker-compose exec app pytest -v
-Миграции базы данных
-bash
+Результат:
+
+text
+================== 6 passed in 1.73s ==================
+```
+
+🗄️ Миграции базы данных
+```bash
 # Создать миграцию
 docker-compose exec app alembic revision --autogenerate -m "migration_name"
 
 # Применить миграции
 docker-compose exec app alembic upgrade head
-Структура проекта
+```
+
+📁 Структура проекта
+```bash
+
 text
 app/
 ├── api/              # Роутеры API
+│   └── routers/      # Эндпоинты
 ├── core/             # Конфигурация и БД
 ├── models/           # SQLAlchemy модели
 ├── schemas/          # Pydantic схемы
 ├── services/         # Бизнес-логика
 ├── utils/            # Вспомогательные функции
 └── tests/            # Pytest тесты
-Остановка проекта
-bash
-docker-compose down
+```
